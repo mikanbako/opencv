@@ -130,6 +130,33 @@ JNIEXPORT jlong JNICALL Java_org_opencv_core_Mat_n_1Mat__IIIDDDD
 
 
 //
+//   Mat::Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP)
+//
+
+
+JNIEXPORT jlong JNICALL Java_org_opencv_core_Mat_n_1Mat__IIILjava_nio_Buffer_2
+  (JNIEnv* env, jclass, jint rows, jint cols, jint type, jobject directBuffer);
+
+
+JNIEXPORT jlong JNICALL Java_org_opencv_core_Mat_n_1Mat__IIILjava_nio_Buffer_2
+  (JNIEnv* env, jclass, jint rows, jint cols, jint type, jobject directBuffer)
+{
+    static const char method_name[] = "Mat::n_1Mat__IIILjava_nio_Buffer_2()";
+    try {
+        LOGD("%s", method_name);
+        return (jlong) new Mat( rows, cols, type, env->GetDirectBufferAddress(directBuffer) );
+    } catch(const std::exception &e) {
+        throwJavaException(env, &e, method_name);
+    } catch (...) {
+        throwJavaException(env, 0, method_name);
+    }
+
+    return 0;
+}
+
+
+
+//
 //   Mat::Mat(Size size, int type, Scalar s)
 //
 

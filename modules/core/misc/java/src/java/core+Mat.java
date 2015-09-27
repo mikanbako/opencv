@@ -1,5 +1,7 @@
 package org.opencv.core;
 
+import java.nio.Buffer;
+
 // C++: class Mat
 //javadoc: Mat
 public class Mat {
@@ -74,6 +76,19 @@ public class Mat {
     {
 
         nativeObj = n_Mat(size.width, size.height, type, s.val[0], s.val[1], s.val[2], s.val[3]);
+
+        return;
+    }
+
+    //
+    // C++: Mat::Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP)
+    //
+
+    // javadoc: Mat::Mat(int rows, int cols, int type, void* data)
+    public Mat(int rows, int cols, int type, Buffer directBuffer)
+    {
+
+        nativeObj = n_Mat(rows, cols, type, directBuffer);
 
         return;
     }
@@ -1106,6 +1121,9 @@ public class Mat {
 
     // C++: Mat::Mat(int rows, int cols, int type, Scalar s)
     private static native long n_Mat(int rows, int cols, int type, double s_val0, double s_val1, double s_val2, double s_val3);
+
+    // C++: Mat::Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP)
+    private static native long n_Mat(int rows, int cols, int type, Buffer directBuffer);
 
     // C++: Mat::Mat(Size size, int type, Scalar s)
     private static native long n_Mat(double size_width, double size_height, int type, double s_val0, double s_val1, double s_val2, double s_val3);

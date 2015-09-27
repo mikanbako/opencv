@@ -1,5 +1,6 @@
 package org.opencv.test.core;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import org.opencv.core.Core;
@@ -513,6 +514,17 @@ public class MatTest extends OpenCVTestCase {
         Mat m = new Mat();
         assertNotNull(m);
         assertTrue(m.empty());
+    }
+
+    public void testMatDirectBuffer() {
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect((int)gray1.total());
+        byte[] byteArray = new byte[byteBuffer.remaining()];
+
+        gray1.get(0, 0, byteArray);
+        byteBuffer.put(byteArray);
+
+        Mat m = new Mat(gray1.rows(), gray1.cols(), gray1.type(), byteBuffer);
+        assertMatEqual(m, gray1);
     }
 
     public void testMatIntIntCvType() {
