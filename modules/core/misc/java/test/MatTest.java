@@ -527,6 +527,18 @@ public class MatTest extends OpenCVTestCase {
         assertMatEqual(m, gray1);
     }
 
+    public void testMatNoDirectBuffer() {
+        byte[] byteArray = new byte[(int)gray1.total()];
+        gray1.get(0, 0, byteArray);
+
+        try {
+            new Mat(gray1.rows(), gray1.cols(), gray1.type(), ByteBuffer.wrap(byteArray));
+            fail("Expected UnsupportedOperationException (directBuffer.isDirect() != true)");
+        } catch (UnsupportedOperationException e) {
+            // expected
+        }
+    }
+
     public void testMatIntIntCvType() {
         Mat gray = new Mat(1, 1, CvType.CV_8UC1);
         assertFalse(gray.empty());
